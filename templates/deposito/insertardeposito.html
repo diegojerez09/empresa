@@ -1,0 +1,66 @@
+{% include 'header.html' %}
+
+{% with messages= get_flashed_messages() %}
+
+{% if messages %}
+    <div class="alert alert-danger" role="alert">
+        {% for message in messages %}
+            {{message}}
+        {% endfor %}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% endif %}
+
+{% endwith %}
+
+<br>
+<form method="post" action="/storedeposito" enctype="multipart/form-data">
+
+    <div class="card">
+        <div class="card-header">
+            Depositos
+        </div>
+            <div class="card-body">
+                <h5 class="card-title">Datos del Deposito</h5>
+            <p class="card-text">
+
+            <div class="form-group">
+                <label for="txtNombre">Nombre</label>
+                <input id="txtNombre" class="form-control" type="text" name="txtNombre" title="Por favor ingrese un Nombre" oninput="convertirAMayusculas('txtNombre')">
+            </div>
+            <div class="form-group">
+                <label for="txtDescripcion">Direccion/Descripcion</label>
+                <input id="txtDescripcion" class="form-control" type="text" name="txtDescripcion" title="Por favor ingrese una Descripcion" oninput="convertirAMayusculas('txtDescripcion')">
+            </div>
+            <div class="form-group">
+                <label for="txtFechaInicio">Fecha Inicio</label>
+                <input id="txtFechaInicio" class="form-control" type="date" name="txtFechaInicio" title="Por favor seleccione una Fecha de Inicio">
+            </div>
+            <div class="form-group">
+                <label for="txtFechaFin">Fecha Fin</label>
+                <input id="txtFechaFin" class="form-control" type="date" name="txtFechaFin" title="Por favor seleccione una Fecha de Finalizacion">
+            </div>
+            <div class="form-group">
+                <label for="txtEstado">Estado</label>
+                <select name="Estado" class="form-control" type="select" title="Por favor seleccione una de las dos opciones">
+                    <option value="EN PROCESO">EN PROCESO</option>
+                    <option value="FINALIZADA">FINALIZADA</option>
+                </select>
+            </div>
+            
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-success" value="Agregar">
+                <a href="{{url_for('deposito')}}" class="btn btn-primary">Regresar</a>
+            </div>
+            
+
+         </p>
+        </div>
+        
+    </div>
+</form>
+
+{% include 'footer.html' %}

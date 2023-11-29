@@ -1,0 +1,148 @@
+{% include 'header.html' %}
+
+<!-- ENVIAR Y RECIBIR MENSAJES DEL SERVIDOR -->
+{% with messages= get_flashed_messages() %}
+
+{% if messages %}
+<div class="alert alert-success" role="alert">
+    {% for message in messages %}
+    {{message}}
+    {% endfor %}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+{% endwith %}
+
+
+
+
+<br/>
+
+
+
+<a href='insertarherramienta' class="btn btn-success">
+    
+    Nueva Herramienta
+
+</a>
+
+<a href='deposito_herramienta' class="btn btn-info">
+    
+    Ver en Deposito
+
+</a>
+<br>
+<br>
+
+    <table class="table table-light" id="datatable">
+        <thead class="thead-light">
+            <tr>
+                <th>Nombre</th>
+                <th>Categoria</th>
+                <th>Cantidad</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for herramienta in herramienta  %}
+                
+            
+            <tr>
+                <td>{{herramienta[1]}}</td>
+                <td>{{herramienta[2]}}</td>
+                <td>{{herramienta[3]}}</td>
+                <td>{{herramienta[4]}}</td>
+                <td> 
+                    <a class="btn btn-warning" href="/editarherramienta/{{herramienta[0]}}">Editar</a>
+                    <a onclick="return confirm('¿Desea Eliminar la herramienta?')" class="btn btn-danger" href="/eliminarherramienta/{{herramienta[0]}}">Eliminar</a>
+                    <a class="btn btn-info ver-herramienta" data-toggle="modal" data-target="#verHerramientaModal" data-herramienta-id="{{ herramienta[0] }}" href="#">Ver</a>
+
+                   
+                </td>
+            </tr>
+            {% endfor %}
+
+           
+
+
+        </tbody>
+    </table>
+    
+    <div class="modal fade" id="verHerramientaModal" tabindex="-1" role="dialog" aria-labelledby="verHerramientaModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="background-color: #eaffc2;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="verHerramientaModalLabel">Detalles de la Herramienta</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                    <!-- Contenido del modal -->
+                    <b> <p id="nombreHerramienta">  </p> </b>
+                    
+                    <b> <div id="detallesDepositos"></div> </b>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+    
+
+    <script>
+        // Manejador de clic para los enlaces "Ver"
+        document.querySelectorAll('.ver-herramienta').forEach(function(element) {
+            element.addEventListener('click', function() {
+                // Obtener el ID de la herramienta desde el atributo data-herramienta-id
+                var herramientaId = element.getAttribute('data-herramienta-id');
+                
+                // Realizar una solicitud AJAX para obtener los detalles de la herramienta
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        // Parsear la respuesta JSON
+                        var detalles = JSON.parse(xhr.responseText);
+                        
+                        // Limpiar el contenido anterior del modal
+                        document.getElementById('nombreHerramienta').innerText = "";
+                        document.getElementById('detallesDepositos').innerHTML = "";
+    
+                        // Actualizar el contenido del modal con los detalles de la herramienta
+                        document.getElementById('nombreHerramienta').innerText =  detalles[0].NombreHerramienta;
+    
+                        // Iterar sobre los detalles de los depósitos y agregarlos al modal
+                        detalles.forEach(function(detalle) {
+                            var depositoInfo = document.createElement('p');
+                            depositoInfo.innerText = "Depósito: " + detalle.NombreDeposito + ", Cantidad: " + detalle.CantidadDeposito;
+                            document.getElementById('detallesDepositos').appendChild(depositoInfo);
+                        });
+    
+                        // Mostrar el modal
+                        $('#verHerramientaModal').modal('show');
+                    }
+                };
+                xhr.open('GET', '/obtener_detalles_herramienta/' + herramientaId, true);
+                xhr.send();
+            });
+        });
+    </script>
+    
+    
+   
+  
+
+{% include 'footer.html' %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdn.rawgit.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+

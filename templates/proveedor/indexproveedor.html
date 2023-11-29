@@ -1,0 +1,72 @@
+{% include 'header.html' %}
+
+<!-- ENVIAR Y RECIBIR MENSAJES DEL SERVIDOR -->
+{% with messages= get_flashed_messages() %}
+
+{% if messages %}
+<div class="alert alert-success" role="alert">
+    {% for message in messages %}
+    {{message}}
+    {% endfor %}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+{% endwith %}
+
+
+
+<br/>
+
+<a href='insertarproveedor' class="btn btn-success">
+    
+    Nuevo Proveedor
+
+</a>
+<br>
+<br>
+
+    <table class="table table-light" id="datatable">
+        <thead class="thead-light">
+            <tr>
+                <th>Nombre</th>
+                <th>Cuit</th>
+                <th>Direccion</th>
+                <th>Telefono</th>
+                <th>Email</th>
+                <th>Contacto</th>
+                <th>N° Contacto</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for proveedor in proveedor  %}
+                
+            
+            <tr>
+                <td>{{proveedor[1]}}</td>
+                <td>{{proveedor[2]}}</td>
+                <td>{{proveedor[3]}}</td>
+                <td>{{proveedor[4]}}</td>
+                <td>{{proveedor[5]}}</td>
+                <td>{{proveedor[6]}}</td>
+                <td>{{proveedor[7]}}</td>
+                <td>{{proveedor[8]}}</td>
+                <td> 
+                    <!-- <a class="btn btn-success">Ver "+"</a> -->
+                    <a class="btn btn-warning" href="/editarproveedor/{{proveedor[0]}}">Editar</a>
+                    <a onclick="return confirm('¿Desea borrar el proveedor?')"    class="btn btn-danger" href="/eliminarproveedor/{{proveedor[0]}}">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+
+
+
+
+        </tbody>
+    </table>
+
+{% include 'footer.html' %}

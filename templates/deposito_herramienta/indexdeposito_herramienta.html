@@ -1,0 +1,34 @@
+{% include 'header.html' %}
+<br/>
+<h2>Depositos Herramientas</h2>
+<br>
+<br>
+
+    <table class="table table-light" id="datatable">
+        <thead class="thead-light">
+            <tr>
+                <th>#</th>
+                <th>Cantidad</th>
+                <th>Herramienta</th>
+                <th>Deposito</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for deposito_herramienta in deposito_herramienta  %}
+                
+            
+            <tr>
+                <td>{{deposito_herramienta[0]}}</td>
+                <td>{{deposito_herramienta[1]}}</td>
+                <td>{{deposito_herramienta[2]}}</td>
+                <td>{{deposito_herramienta[3]}}</td>
+                
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+{% include 'footer.html' %}

@@ -1,0 +1,493 @@
+{% include 'header.html' %}
+
+{% with messages= get_flashed_messages() %}
+
+{% if messages %}
+<div class="alert alert-danger" role="alert">
+    {% for message in messages %}
+    {{message}}
+    {% endfor %}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% endwith %}
+
+<br>
+
+
+
+
+<form id="miFormulario" method="post" action="/store_movimientos" enctype="multipart/form-data">
+
+    <div class="card">
+        <div class="card-header">
+            Movimientos
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Datos del Movimientos</h5>
+            <p class="card-text">
+
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <label for="txtTipo">Tipo</label>
+                    <select name="Tipo" class="form-control" type="select" id="Tipo">
+
+                        <option value=''>ELIGE UNA OPCION</option>
+                        <option value="1">ENTRADA</option>
+                        <option value="2">SALIDA</option>
+
+                    </select>
+                </div>
+
+
+                
+
+                <div class="form-group col-md-3">
+                    <label for="txtProveedor">Proveedor</label>
+                    <select name="Proveedor" class="form-control" type="select" id="Proveedor" disabled>
+                        {%for proveedor in proveedor%}
+                        <option value="{{proveedor[0]}}">{{proveedor[1]}}</option>
+                        {% endfor%}
+                    </select>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="txtRemito">N° Remito</label>
+                    <input id="txtRemito" class="form-control" type="text" name="txtRemito" disabled value="0">
+                </div>
+                
+                <div class="form-group col-md-3">
+                    <label for="txtOrigen">Origen</label>
+                    <select name="Origen" class="form-control" type="select" id="Origen" disabled>
+
+                        <option value="">ELEIGE UNA OPCION</option>
+                        {% for deposito in depositos %}
+                        <option value="{{deposito[0]}}">{{deposito[1]}}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+                
+
+
+
+
+                <div class="form-group col-md-3">
+                    <label for="txtDestino">Destino</label>
+                    <select name="Destino" class="form-control" type="select"  id="Destino" disabled>
+                        <option value="">ELEIGE UNA OPCION</option>
+                        {% for deposito in depositos %}
+                        <option value="{{deposito[0]}}">{{deposito[1]}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+
+                <div class="form-group col-md-3">
+                    <label for="txtFecha">Fecha</label>
+                    <input id="txtFecha" class="form-control" type="date" name="txtFecha">
+                </div>
+
+                
+
+
+                <!-- DATOS DE LA TABLA OCULTOS-->
+                <input type="hidden" name="tablaData" id="tablaData" value="">
+
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+
+        <div class="card-header">
+            Herramientas / Materiales
+        </div>
+
+        <div class="card-body">
+
+
+            <div class="row">
+                <div class="form-group col-md-4" id="divHerramientas">
+                    <label for="txtHerramientaId">Herramienta</label>
+
+                    <input type="hidden" id="txtHerramientaId" value="">
+                    <input id="txtHerramienta" class="form-control" type="text" name="txtHerramienta">
+
+                    <div id="autocomplete-results-herramienta"></div> <!-- Resultados para herramienta -->
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="txtHerramientaCantidad">Cantidad (1-100):</label>
+                    <input id="txtHerramientaCantidad" class="form-control" type="number" min="1" max="100"
+                        name="txtHerramientaCantidad">
+
+                </div>
+
+                <div class="form-group col-md-4 d-flex align-items-end">
+                    <input type="button" class="btn btn-success btnAgregar" value="Agregar Herramienta">
+                </div>
+
+            </div>
+
+
+
+
+
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label for="txtMaterialId">Material</label>
+                    <input type="hidden" id="txtMaterialId" value="">
+                    <input id="txtMaterial" class="form-control" type="text" name="txtMaterial">
+                    <div id="autocomplete-results"></div>
+                </div>
+
+
+
+
+                <div class="form-group col-md-4">
+                    <label for="txtMaterialCantidad">Cantidad (1-100):</label>
+                    <input id="txtMaterialCantidad" class="form-control" type="number" min="1" max="100"
+                        name="txtMaterialCantidad">
+
+                </div>
+
+
+                <div class="form-group col-md-4 d-flex align-items-end">
+                    <input type="button" class="btn btn-success btnAgregar" value="Agregar Material">
+                </div>
+
+            </div>
+
+
+
+            <br>
+
+
+            <br>
+            <br>
+
+            <table class="table table-light" id="tablaElementos">
+                <thead class="thead-light">
+                    <tr>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>Herramientas/Material</th>
+                        <th>Cantidad</th>
+                        <th>Tipo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <div class="form-group">
+
+                <input type="submit" class="btn btn-success" value="Grabar" name="submit">
+                <a href="{{url_for('movimientos')}}" class="btn btn-primary">Regresar</a>
+            </div>
+
+        </div>
+
+
+
+
+</form>
+
+
+
+
+<!--  AGREGAR DATOS A LA TABLA HERRAMIENTTAS O MATERIALES-->
+<script>
+    let contador = 1;
+ 
+    // Agrega un evento click a los botones "Agregar Herramienta" Y "Agregar Material"
+    document.querySelectorAll(".btnAgregar").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            agregarElemento(this);
+        });
+    });
+ 
+    function agregarElemento(btn) {
+    const tipo = btn.value === "Agregar Herramienta" ? "Herramienta" : "Material";
+    const nombre = document.getElementById(`txt${tipo}`).value;
+    const cantidad = document.getElementById(`txt${tipo}Cantidad`).value;
+
+    
+
+    // Validar que los campos no estén vacíos y la cantidad no sea cero
+    if (nombre.trim() === "" || cantidad.trim() === "" || cantidad <= 0) {
+        alert("Por favor, complete los campos correctamente.");
+        return;
+    }
+
+    const tipoValor = tipo === "Herramienta" ? 1 : 2; // Asigna 1 para herramientas y 2 para materiales
+
+    // Verificar si el elemento ya existe en la tabla
+    
+
+    // Obtener el ID del elemento seleccionado
+    //var id = herramienta.id;
+    //const idInput = document.getElementById(`txt${tipo}Id`);
+    //const id = idInput ? idInput.value : ""; // Captura el valor del campo ID si existe
+    // Obtén el ID del campo oculto
+    const id = document.getElementById(`txt${tipo}Id`).value;
+    
+
+    // Crear un objeto que represente la fila actual
+    const elemento = {
+        id: id,
+        nombre: nombre,
+        cantidad: cantidad,
+        tipo: tipoValor,
+    };
+
+    // Agregar el objeto a una lista
+    const tablaData = JSON.parse(document.getElementById("tablaData").value || '[]');
+    tablaData.push(elemento);
+
+    // Actualizar el valor del campo oculto con la lista de datos
+    document.getElementById("tablaData").value = JSON.stringify(tablaData);
+
+    const tabla = document.getElementById("tablaElementos").getElementsByTagName('tbody')[0];
+
+    const fila = tabla.insertRow();
+
+    const numCelda = fila.insertCell(0);
+    const idCelda = fila.insertCell(1);
+    const nombreCelda = fila.insertCell(2);
+    const cantidadCelda = fila.insertCell(3);
+    const tipoCelda = fila.insertCell(4);
+    const accionesCelda = fila.insertCell(5);
+
+    numCelda.innerHTML = contador;
+    idCelda.innerHTML = id; // Agrega el ID en esta celda
+    nombreCelda.innerHTML = nombre;
+    cantidadCelda.innerHTML = cantidad;
+    tipoCelda.innerHTML = tipoValor;
+    accionesCelda.innerHTML = `
+        <button class="btn btn-danger btnEliminar" onclick="eliminarFila(this)">Eliminar</button> `;
+
+    contador++;
+    document.getElementById(`txt${tipo}`).value = "";
+    document.getElementById(`txt${tipo}Cantidad`).value = "";
+}
+
+ 
+    function eliminarFila(botonEliminar) {
+        const fila = botonEliminar.parentNode.parentNode;
+        fila.parentNode.removeChild(fila);
+    }
+
+ </script>
+ 
+
+
+
+
+
+<!--  AUTOCOMPLETAR EL CAMPO CUANDO BUSQUE MATERIALES-->
+
+<script>
+    // Autocompletar el campo de entrada mientras el usuario escribe
+    document.getElementById('txtMaterial').addEventListener('input', function() {
+        var term = this.value;
+        var resultsDiv = document.getElementById('autocomplete-results');
+        resultsDiv.innerHTML = '';  // Limpiar resultados anteriores
+
+        // Hacer una solicitud AJAX para buscar materiales coincidentes
+        if (term.length >= 1) {
+            fetch(`/buscar_material?term=${term}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Mostrar los resultados en el div de resultados
+                    if (data.length > 0) {
+                        data.forEach(function(material) {
+                            var resultItem = document.createElement('div');
+                            resultItem.textContent = material.nombre;
+
+                            resultItem.addEventListener('click', function() {
+                                document.getElementById('txtMaterial').value = material.nombre;
+
+                                // Asigna el ID de la herramienta a la variable 'id'
+                                const id = material.id;
+                                document.getElementById('txtMaterialId').value = id; 
+
+                                resultsDiv.innerHTML = '';  // Limpiar resultados después de seleccionar
+                            });
+                            resultsDiv.appendChild(resultItem);
+                        });
+                    } else {
+                        // Mostrar mensaje de error si no hay resultados
+                        var errorItem = document.createElement('div');
+                        errorItem.textContent = 'Material no encontrado';
+                        resultsDiv.appendChild(errorItem);
+                    }
+                });
+        }
+    });
+</script>
+
+
+
+
+<!--  AUTOCOMPLETAR EL CAMPO CUANDO BUSQUE HERRAMIENTAS-->
+
+<script>
+
+    // Autocompletar el campo de entrada mientras el usuario escribe
+    document.getElementById('txtHerramienta').addEventListener('input', function () {
+            var term = this.value;
+            var resultsDiv = document.getElementById('autocomplete-results-herramienta');
+            resultsDiv.innerHTML = '';  // Limpiar resultados anteriores
+
+            // Hacer una solicitud AJAX para buscar herramientas coincidentes
+            if (term.length >= 1) {
+                fetch(`/buscar_herramienta?term=${term}`)
+                    .then(response => response.json())
+                    .then(data => {
+                       if (data.length > 0) {
+                        // Mostrar los resultados en el div de resultados
+                        //var herramientaInput = document.getElementById('txtHerramienta');
+                        //var resultsDiv = herramientaInput.nextElementSibling; // Obten el siguiente elemento (div) del input
+                        resultsDiv.innerHTML = '';  // Limpiar resultados anteriores
+                        data.forEach(function (herramienta) {
+                            var resultItem = document.createElement('div');
+                            resultItem.textContent = herramienta.nombre;
+                            //document.getElementById('herramientaId').value = herramienta.id; // Guardar el ID
+                            resultItem.addEventListener('click', function () {
+                                document.getElementById('txtHerramienta').value = herramienta.nombre;
+
+                                // Asigna el ID de la herramienta a la variable 'id'
+                                const id = herramienta.id;
+                                document.getElementById('txtHerramientaId').value = id;
+                                //agregarElemento(btn);
+                                resultsDiv.innerHTML = '';  // Limpiar resultados después de seleccionar
+                                
+                            });
+                            resultsDiv.appendChild(resultItem);
+                        });
+                     }else {
+                        // Mostrar mensaje de error si no hay resultados
+                        var errorItem = document.createElement('div');
+                        errorItem.textContent = 'Herramienta no encontrada';
+                        resultsDiv.appendChild(errorItem);
+                    }
+                    });
+            }
+        });
+
+
+</script>
+
+<!--  COMPLETA LA TABLA HERRAMIENTA / MATERIALES -->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Agrega el evento submit al formulario cuando el DOM esté completamente cargado
+        document.getElementById('miFormulario').addEventListener('submit', function (event) {
+            //event.preventDefault(); // Evita que el formulario se envíe automáticamente
+    
+            // Recopila los datos de la tabla
+            var table = document.getElementById('tablaElementos');
+            var tbody = table.getElementsByTagName('tbody')[0];
+            var rows = tbody.getElementsByTagName('tr');
+            var dataToSend = [];
+    
+            for (var i = 0; i < rows.length; i++) {
+                var row = rows[i];
+                var cells = row.getElementsByTagName('td');
+                var rowData = {
+                    id: cells[1].textContent,
+                    herramientaMaterial: cells[2].textContent,
+                    cantidad: cells[3].textContent
+                };
+                dataToSend.push(rowData);
+            }
+    
+            // Crea un campo oculto para los datos de la tabla y agrega los datos
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'tablaData'); // Nombre del campo en el formulario
+            hiddenInput.setAttribute('value', JSON.stringify(dataToSend)); // Convierte los datos a JSON
+    
+            // Agrega el campo oculto al formulario
+            this.appendChild(hiddenInput);
+    
+            // Envía el formulario
+            this.submit();
+        });
+    });
+    </script>
+    
+
+<!--  ACTIVAR Y DESACTIVAR SELECT'S-->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+<script>
+    // Asegúrate de que este código esté dentro de una función o evento apropiado.
+    document.addEventListener("DOMContentLoaded", function () {
+        
+        
+    $(document).ready(function() {
+        $("#Tipo").change(function() {
+            if ($(this).val() == "1") {
+                
+                //$("#Origen option[value='2']").prop("disabled", true);
+                //$("#Origen_Salida").prop("disabled",true)
+                $("#Proveedor").prop("disabled", false);
+                $("#txtRemito").prop("disabled", false);
+                $("#Destino").prop("disabled", true);
+                $("#Origen").prop("disabled", true);
+
+            } else {
+                $("#Proveedor").prop("disabled", true);
+                $("#txtRemito").prop("disabled", true);
+                $("#Origen").prop("disabled", false);
+                $("#Destino").prop("disabled", false);
+               
+
+                //console.log("holaaa");
+                // Itera a través de los elementos del array "depositos".
+
+                
+                //for (let i = 0; i < depositos.length; i++) {
+                //   let deposito = depositos[i];
+                //    console.log("ID: " + deposito.id);
+                //   console.log("Nombre: " + deposito.nombre)
+                //    console.log(deposito); // Accede a cada elemento del array "depositos".
+                //}
+                                
+            }
+        });
+    
+      
+        });
+    });
+    </script>
+
+
+
+
+
+
+{% include 'footer.html' %}

@@ -1,0 +1,49 @@
+{% include 'header.html' %}
+<br/>
+
+<a href='insertarempleado' class="btn btn-success">
+    
+    Nuevo Empleado
+
+</a>
+<br>
+<br>
+
+    <table class="table table-light" id="datatable">
+        <thead class="thead-light">
+            <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Fecha de Nacimiento</th>
+                <th>Direccion</th>
+                <th>Telefono</th>
+                <th>Email</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for empleado in empleado  %}
+                
+            
+            <tr>
+                <td>{{empleado[0]}}</td>
+                <td>{{empleado[1]}}</td>
+                <td>{{empleado[2]}}</td>
+                <td>{{empleado[3]}}</td>
+                <td>{{empleado[4]}}</td>
+                <td>{{empleado[5]}}</td>
+                <td> 
+                    <a class="btn btn-warning" href="/editarempleado/{{empleado[0]}}">Editar</a>
+                    <a onclick="return confirm('¿Desea dar de Baja al Empleado?')"    class="btn btn-danger" href="/eliminarempleado/{{empleado[0]}}">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+
+
+
+
+        </tbody>
+    </table>
+
+{% include 'footer.html' %}

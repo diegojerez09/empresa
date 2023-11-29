@@ -1,0 +1,106 @@
+{% include 'header.html' %}
+
+<!-- ENVIAR Y RECIBIR MENSAJES DEL SERVIDOR -->
+{% with messages= get_flashed_messages() %}
+
+{% if messages %}
+<div class="alert alert-success" role="alert">
+    {% for message in messages %}
+    {{message}}
+    {% endfor %}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+{% endwith %}
+
+
+<!-- ------------------------------------------ -->
+
+<div class="card">
+    <div class="card-header">
+        Movimientos
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Datos del Movimientos</h5>
+        <p class="card-text">
+            <a class="btn btn-success" href="{{url_for('movimientos_detalle')}}">Nuevo</a>
+
+            <br>
+
+            <table class="table table-light" id="datatable">
+                <thead class="thead-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Tipo</th>
+                        <th>Origen</th>
+                        <th>Destino</th>
+                        <th>Fecha</th>
+                        <th>Numero Remito</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for movimiento in movimientos %}
+                        <tr>
+                            <td>{{ movimiento[0] }}</td>
+                            
+                            {% if movimiento[1] == 'ENTRADA'%}
+                             <td style="background-color: rgb(0, 255, 136)">{{ movimiento[1]}}</td>  
+                            {% else%}
+                             <td style="background-color: rgb(255, 115, 0)"> {{movimiento[1]}}</td>  
+                            
+                            {% endif %}
+
+
+
+                            <td>
+                                {% if movimiento[2] in id_depositos %}
+                                    {{ nombres_depositos[id_depositos.index(movimiento[2])] }}
+                                
+                                {% elif movimiento[2] in id_proveedores %}
+                                    {{ nombre_proveedores[movimiento[2]] }}
+                                
+                                                               
+                                {% else %}
+                                    {{ movimiento[2] }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if movimiento[3] in id_depositos %}
+                                    {{ nombres_depositos[id_depositos.index(movimiento[3])] }}
+
+                                
+                                {% else %}
+                                    {{movimiento[3]}}
+
+                                {% endif %}
+                            </td>
+                            <td>{{ movimiento[4] }}</td>
+                            <td>{{ movimiento[5] }}</td>
+                            <td>
+                                <a onclick="return confirm('¿Desea dar de Baja al Movimiento?')" class="btn btn-danger"
+                                    href="/eliminarmovimiento/{{ movimiento[0] }}">Eliminar</a>
+                                <!-- Botón para abrir el modal -->
+                                <a class="btn btn-primary mostrarModal" href="/MostarMovimiento/{{ movimiento[0] }}">Mostrar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+
+
+
+
+      
+
+
+
+
+    </div>
+
+
+
+    {% include 'footer.html' %}

@@ -1,0 +1,75 @@
+{% include 'header.html' %}
+
+{% with messages= get_flashed_messages() %}
+
+{% if messages %}
+    <div class="alert alert-danger" role="alert">
+        {% for message in messages %}
+            {{message}}
+        {% endfor %}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% endif %}
+
+{% endwith %}
+
+<br>
+<form method="post" action="/storeproveedor" enctype="multipart/form-data">
+
+    <div class="card">
+        <div class="card-header">
+            Proveedor
+        </div>
+            <div class="card-body">
+                <h5 class="card-title">Datos de Proveedor</h5>
+            <p class="card-text">
+
+
+
+            <div class="form-group">
+                <label for="txtNombre">Nombre</label>
+                <input id="txtNombre" class="form-control" type="text" name="txtNombre" title="Por favor ingrese el nombre" oninput="convertirAMayusculasInsercion()">
+            </div>
+            <div class="form-group">
+                <label for="txtCuit">Cuit</label>
+                <input id="txtCuit" class="form-control" type="text" name="txtCuit" title="Por favor ingrese la cantidad">
+            </div>
+            <div class="form-group">
+                <label for="txtDireccion">Direccion</label>
+                <input id="txtDireccion" class="form-control" type="text" name="txtDireccion" title="Por favor ingrese la direccion" oninput="convertirAMayusculasInsercion()">
+            </div>
+            <div class="form-group">
+                <label for="txtTelefono">Telefono</label>
+                <input id="txtTelefono" class="form-control" type="text" name="txtTelefono" title="Por favor ingrese el telefono">
+            </div>
+            <div class="form-group">
+                <label for="txtEmail">Email</label>
+                <input id="txtEmail" class="form-control" type="text" name="txtEmail"  title="Por favor ingrese el email">
+            </div>
+            <div class="form-group">
+                <label for="txtContacto">Contacto</label>
+                <input id="txtContacto" class="form-control" type="text" name="txtContacto" title="Por favor ingrese el nombre de contacto" oninput="convertirAMayusculasInsercion()">
+            </div>
+            <div class="form-group">
+                <label for="txtTelefonoContacto">Telefono Contacto</label>
+                <input id="txtTelefonoContacto" class="form-control" type="text" name="txtTelefonoContacto" title="Por favor ingrese el telefono de contacto">
+            </div>
+            <div class="form-group">
+                <label for="txtEstado">Estado</label> 
+                <select id="txtEstado" class="form-control" type="select" name="txtEstado">
+                     <option value="ACTIVO">ACTIVO</option>
+                     <option value="INACTIVO">INACTIVO</option>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-success" value="Agregar">
+                <a href="{{url_for('proveedor')}}" class="btn btn-primary">Regresar</a>
+            </div>
+
+         </p>
+        </div>
+    </div>
+</form>
+
+{% include 'footer.html' %}

@@ -1,0 +1,49 @@
+{% include 'header.html' %}
+<br/>
+
+<a href='insertardeposito' class="btn btn-success">
+    
+    Nuevo Deposito
+
+</a>
+<br>
+<br>
+
+    <table class="table table-light" id="datatable">
+        <thead class="thead-light">
+            <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for deposito in deposito  %}
+                
+            
+            <tr>
+                <td>{{deposito[0]}}</td>
+                <td>{{deposito[1]}}</td>
+                <td>{{deposito[2]}}</td>
+                <td>{{deposito[3]}}</td>
+                <td>{{deposito[4]}}</td>
+                <td>{{deposito[5]}}</td>
+                <td> 
+                    <a class="btn btn-warning" href="/editardeposito/{{deposito[0]}}">Editar</a>
+                    <a onclick="return confirm('¿Desea Eliminar el deposito?')"    class="btn btn-danger" href="/eliminardeposito/{{deposito[0]}}">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+
+
+
+
+        </tbody>
+    </table>
+
+{% include 'footer.html' %}

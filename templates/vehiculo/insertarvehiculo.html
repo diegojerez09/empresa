@@ -1,0 +1,57 @@
+{% include 'header.html' %}
+
+{% with messages= get_flashed_messages() %}
+
+{% if messages %}
+    <div class="alert alert-danger" role="alert">
+        {% for message in messages %}
+            {{message}}
+        {% endfor %}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% endif %}
+
+{% endwith %}
+
+<br>
+<form method="post" action="/storevehiculo" enctype="multipart/form-data">
+
+    <div class="card">
+        <div class="card-header">
+            Vehiculo
+        </div>
+            <div class="card-body">
+                <h5 class="card-title">Datos del Vehiculo</h5>
+            <p class="card-text">
+
+
+
+            <div class="form-group">
+                <label for="txtPatente">Patente</label>
+                <input id="txtPatente" class="form-control" type="text" name="txtPatente" title="Por favor ingrese la patente" oninput="convertirAMayusculasInsercion()">
+            </div>
+            <div class="form-group">
+                <label for="txtMarca">Marca</label>
+                <input id="txtMarca" class="form-control" type="text" name="txtMarca" title="Por favor ingrese la marca" oninput="convertirAMayusculasInsercion()">
+            </div>
+            <div class="form-group">
+                <label for="txtModelo">Modelo</label>
+                <input id="txtModelo" class="form-control" type="text" name="txtModelo" title="Por favor ingrese el modelo" oninput="convertirAMayusculasInsercion()">
+            </div>
+            <div class="form-group">
+                <label for="txtAño">Año</label>
+                <input id="txtAño" class="form-control" type="number" name="txtAño" min="2000" max="3000" title="Por favor ingrese el año">
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-success" value="Agregar">
+                <a href="{{url_for('vehiculo')}}" class="btn btn-primary">Regresar</a>
+            </div>
+
+         </p>
+        </div>
+    </div>
+</form>
+
+{% include 'footer.html' %}

@@ -1,0 +1,55 @@
+{% include 'header.html' %}
+{% for herramienta in herramienta %}
+
+
+<form method="post" action="/actualizarherramienta" enctype="multipart/form-data">
+
+        
+    <div class="card">
+        <div class="card-header">
+            Herramientas
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Editar Herramienta</h5>
+            <p class="card-text">
+            
+                <input type="hidden" id="txtId" value="{{herramienta[0]}}" name="txtId" >
+
+            <div class="form-group">
+                <label for="txtNombre">Nombre</label>
+                <input id="txtNombre" class="form-control" type="text" name="txtNombre" title="Puede modificar el nombre" value="{{herramienta[1]}}" oninput="this.value = this.value.replace(/[^A-Za-z]/g, '').toUpperCase();">
+            </div>
+            <div class="form-group">
+                <label for="txtCategoria">Categoria</label> 
+                <select class="form-control" type="select" name="txtCategoria" value="{{herramienta[2]}}">
+                     <option value="1">ELECTRICO</option>
+                     <option value="2">MANUAL</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="txtCantidad">Cantidad</label>
+                <input id="txtCantidad" class="form-control" type="number" name="txtCantidad" min="01" max="10000" title="Puede modificar la cantidad" value="{{herramienta[3]}}">
+            </div>
+            <div class="form-group">
+                <label for="txtEstado">Estado</label> 
+                <select class="form-control" type="text" name="txtEstado" value="{{herramienta[4]}}">
+                     <option value="FUNCIONA">FUNCIONA</option>
+                     <option value="NO FUNCIONA">NO FUNCIONA</option>
+            </div>
+    
+            <div class="form-group">
+                <input type="submit" class="btn btn-success" value="Modificar">
+                <a href="{{url_for('indexherramienta')}}" class="btn btn-primary">Regresar</a>
+            </div>
+    
+            </p>
+        </div>
+    </div>
+
+
+
+    {% endfor %}
+
+</form>
+
+{% include 'footer.html' %}

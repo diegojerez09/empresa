@@ -1,0 +1,47 @@
+{% include 'header.html' %}
+<br/>
+
+<a href='insertarvehiculo' class="btn btn-success">
+    
+    Ingresar Nuevo Vehiculo
+
+</a>
+<br>
+<br>
+
+    <table class="table table-light" id="datatable">
+        <thead class="thead-light">
+            <tr>
+                <th>#</th>
+                <th>Patente</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Año</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for vehiculo in vehiculo  %}
+                
+            
+            <tr>
+                <td>{{vehiculo[0]}}</td>
+                <td>{{vehiculo[1]}}</td>
+                <td>{{vehiculo[2]}}</td>
+                <td>{{vehiculo[3]}}</td>
+                <td>{{vehiculo[4]}}</td>
+                <td> 
+                    <a class="btn btn-warning" href="/editarvehiculo/{{vehiculo[0]}}">Editar</a>
+                    <a onclick="return confirm('¿Desea dar de Baja el Vehiculo?')"    class="btn btn-danger" href="/eliminarvehiculo/{{vehiculo[0]}}">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+
+
+
+
+        </tbody>
+    </table>
+
+{% include 'footer.html' %}

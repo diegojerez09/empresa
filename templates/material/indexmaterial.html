@@ -1,0 +1,117 @@
+{% include 'header.html' %}
+<br/>
+
+<a href='insertarmaterial' class="btn btn-success">
+    
+     Nuevo Material
+
+</a>
+
+<a href='deposito_material' class="btn btn-info">
+    
+    Ver en Deposito
+
+</a>
+<br>
+<br>
+
+    <table class="table table-light" id="datatable">
+        <thead class="thead-light">
+            <tr>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Cantidad</th>
+                <th>Unidad</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for material in material  %}
+                
+            
+            <tr>
+                <td>{{material[1]}}</td>
+                <td>{{material[2]}}</td>
+                <td>{{material[3]}}</td>
+                <td>{{material[4]}}</td>
+                <td> 
+                    <a class="btn btn-warning" href="/editarmaterial/{{material[0]}}">Editar</a>
+                    <a onclick="return confirm('¿Desea Eliminar el Material?')"class="btn btn-danger" href="/eliminarmaterial/{{material[0]}}">Eliminar</a>
+                    <a class="btn btn-info ver-herramienta" data-toggle="modal" data-target="#verHerramientaModal" data-material-id="{{ material[0] }}" href="#">Ver</a>
+                </td>
+            </tr>
+            {% endfor %}
+
+
+
+
+        </tbody>
+    </table>
+
+
+
+    <div class="modal fade" id="verHerramientaModal" tabindex="-1" role="dialog" aria-labelledby="verHerramientaModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="background-color: #eaffc2;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="verHerramientaModalLabel">Detalles del Material</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                    <!-- Contenido del modal -->
+                    <b> <p id="nombreMaterial">  </p> </b>
+                    
+                    <b> <div id="detallesDepositos"></div> </b>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+
+
+    <script>
+        // Manejador de clic para los enlaces "Ver"
+        document.querySelectorAll('.ver-herramienta').forEach(function(element) {
+            element.addEventListener('click', function() {
+                // Obtener el ID de la herramienta desde el atributo data-herramienta-id
+                var materialId = element.getAttribute('data-material-id');
+                
+                // Realizar una solicitud AJAX para obtener los detalles de la herramienta
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        // Parsear la respuesta JSON
+                        var detalles = JSON.parse(xhr.responseText);
+                        
+                        // Limpiar el contenido anterior del modal
+                        document.getElementById('nombreMaterial').innerText = "";
+                        document.getElementById('detallesDepositos').innerHTML = "";
+    
+                        // Actualizar el contenido del modal con los detalles de la herramienta
+                        document.getElementById('nombreMaterial').innerText =  detalles[0].NombreMaterial;
+    
+                        // Iterar sobre los detalles de los depósitos y agregarlos al modal
+                        detalles.forEach(function(detalle) {
+                            var depositoInfo = document.createElement('p');
+                            depositoInfo.innerText = "DEPOSITO: " + detalle.NombreDeposito + ", Cantidad: " + detalle.CantidadDeposito;
+                            document.getElementById('detallesDepositos').appendChild(depositoInfo);
+                        });
+    
+                        // Mostrar el modal
+                        $('#verHerramientaModal').modal('show');
+                    }
+                };
+                xhr.open('GET', '/obtener_detalles_material/' + materialId, true);
+                xhr.send();
+            });
+        });
+    </script>
+
+{% include 'footer.html' %}
+

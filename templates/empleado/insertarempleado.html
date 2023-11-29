@@ -1,0 +1,59 @@
+{% include 'header.html' %}
+
+{% with messages= get_flashed_messages() %}
+
+{% if messages %}
+    <div class="alert alert-danger" role="alert">
+        {% for message in messages %}
+            {{message}}
+        {% endfor %}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% endif %}
+
+{% endwith %}
+
+<br>
+<form method="post" action="/storeempleado" enctype="multipart/form-data">
+
+    <div class="card">
+        <div class="card-header">
+            Empleado
+        </div>
+            <div class="card-body">
+                <h5 class="card-title">Datos del Empleado</h5>
+            <p class="card-text">
+
+            <div class="form-group">
+                <label for="txtNombre">Nombre</label>
+                <input id="txtNombre" class="form-control" type="text" name="txtNombre" title="Por favor ingrese un Nombre" oninput="convertirAMayusculasInsercion()">
+            </div>
+            <div class="form-group">
+                <label for="txtFechaNacimiento">Fecha de Nacimiento</label>
+                <input id="txtFechaNacimiento" class="form-control" type="date" name="txtFechaNacimiento" title="Por favor ingrese una fecha">
+            </div>
+            <div class="form-group">
+                <label for="txtDireccion">Direccion</label>
+                <input id="txtDireccion" class="form-control" type="text" name="txtDireccion" title="Por favor ingrese una Direccion" oninput="convertirAMayusculasInsercion()">
+            </div>
+            <div class="form-group">
+                <label for="txtTelefono">Telefono</label>
+                <input id="txtTelefono" class="form-control" type="text" name="txtTelefono" title="Por favor ingrese un Telefono">
+            </div>
+            <div class="form-group">
+                <label for="txtEmail">Email</label>
+                <input id="txtEmail" class="form-control" type="email" name="txtEmail"  title="Por favor ingrese un Email">
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-success" value="Agregar">
+                <a href="{{url_for('empleado')}}" class="btn btn-primary">Regresar</a>
+            </div>
+
+         </p>
+        </div>
+    </div>
+</form>
+
+{% include 'footer.html' %}

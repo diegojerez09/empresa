@@ -1,0 +1,63 @@
+{% include 'header.html' %}
+
+{% with messages= get_flashed_messages() %}
+
+{% if messages %}
+    <div class="alert alert-danger" role="alert">
+        {% for message in messages %}
+            {{message}}
+        {% endfor %}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% endif %}
+
+{% endwith %}
+
+<br>
+<form method="post" action="/storeherramienta" enctype="multipart/form-data">
+
+    <div class="card">
+        <div class="card-header">
+            Herramientas
+        </div>
+            <div class="card-body">
+                <h5 class="card-title">Datos de Herramientas</h5>
+            <p class="card-text">
+
+            <div class="form-group">
+                <label for="txtNombre">Nombre</label>
+                <input id="txtNombre" class="form-control" type="text" name="txtNombre" title="Por favor ingrese un Nombre" oninput="this.value = this.value.replace(/[^A-Za-z]/g, '').toUpperCase();">
+            </div>
+            
+            <div class="form-group">
+               <label for="txtCategoria">Categoria</label> 
+               <select name="opciones" class="form-control" type="select" title="Por favor seleccione una de las dos opciones">
+                    <option value="1">ELECTRICO</option>
+                    <option value="2">MANUAL</option>
+               </select>
+            </div>
+            <div class="form-group">
+                <label for="txtCantidad">Cantidad</label>
+                <input id="txtCantidad" class="form-control" type="number" name="txtCantidad" min="01" max="10000" title="Por favor ingrese una Cantidad" >
+            </div>
+            <div class="form-group">
+                <label for="txtEstado">Estado</label>
+                <select name="Estado" class="form-control" type="select" title="Por favor seleccione una de las dos opciones">
+                    <option value="FUNCIONA">FUNCIONA</option>
+                    <option value="NO FUNCIONA">NO FUNCIONA</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-success" value="Agregar">
+                <a href="{{url_for('indexherramienta')}}" class="btn btn-primary">Regresar</a>
+            </div>
+
+         </p>
+        </div>
+    </div>
+</form>
+
+{% include 'footer.html' %}

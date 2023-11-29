@@ -1,0 +1,51 @@
+{% include 'header.html' %}
+{% for empleado in empleado %}
+
+
+<form method="post" action="/actualizarempleado" enctype="multipart/form-data">
+
+    <div class="card">
+        <div class="card-header">
+            Empleado
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Editar Empleado</h5>
+            <p class="card-text">
+                
+                <input type="hidden" id="txtId" value="{{empleado[0]}}" name="txtId" >
+
+            <div class="form-group">
+                <label for="txtNombre">Nombre</label>
+                <input id="txtNombre" class="form-control" type="text" name="txtNombre" title="Puede modificar el Nombre" value="{{empleado[1]}}" oninput="convertirAMayusculasEdicion('txtNombre')">
+            </div>
+            <div class="form-group">
+                <label for="txtFechaNacimiento">Fecha de Nacimiento</label>
+                <input id="txtFechaNacimiento" class="form-control" type="date" name="txtFechaNacimiento" title="Puede modificar la Fecha de Nacimiento" value="{{empleado[2]}}">
+            </div>
+            <div class="form-group">
+                <label for="txtDireccion">Direccion</label>
+                <input id="txtDireccion" class="form-control" type="text" name="txtDireccion" title="Puede modificar la direccion" value="{{empleado[3]}}" oninput="convertirAMayusculasEdicion('txtDireccion')">
+            </div>
+            <div class="form-group">
+                <label forq="txtTelefono">Telefono</label>
+                <input id="txtTelefono" class="form-control" type="text" name="txtTelefono" title="Puede modificar el telefono" value="{{empleado[4]}}">
+            </div>
+            <div class="form-group">
+                <label forq="txtEmail">Email</label>
+                <input id="txtEmail" class="form-control" type="text" name="txtEmail" title="Puede modificar el Email" value="{{empleado[5]}}">
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-success" value="Modificar">
+                <a href="{{url_for('empleado')}}" class="btn btn-primary">Regresar</a>
+            </div>
+    
+            </p>
+        </div>
+    </div>
+
+    {% endfor %}
+
+</form>
+
+{% include 'footer.html' %}

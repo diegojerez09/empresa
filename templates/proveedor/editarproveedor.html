@@ -1,0 +1,65 @@
+{% include 'header.html' %}
+{% for proveedor in proveedor %}
+
+
+<form method="post" action="/actualizarproveedor" enctype="multipart/form-data">
+
+    <div class="card">
+        <div class="card-header">
+            Proveedor
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Editar Proveedor</h5>
+            <p class="card-text">
+    
+                <input type="hidden" id="txtId" value="{{proveedor[0]}}" name="txtId" >
+
+            <div class="form-group">
+                <label for="txtNombre">Nombre</label>
+                <input id="txtNombre" class="form-control" type="text" name="txtNombre" title="Puede modificar el nombre" value="{{proveedor[1]}}" oninput="convertirAMayusculasEdicion('txtNombre')">
+            </div>
+            <div class="form-group">
+                <label for="txtCuit">Cuit</label>
+                <input id="txtCuit" class="form-control" type="number" name="txtCuit" title="Puede modificar la cantidad" value="{{proveedor[2]}}">
+            </div>
+            <div class="form-group">
+                <label for="txtDireccion">Direccion</label>
+                <input id="txtDireccion" class="form-control" type="text" name="txtDireccion" title="Puede modificar la direccion" value="{{proveedor[3]}}" oninput="convertirAMayusculasEdicion('txtDireccion')">
+            </div>
+            <div class="form-group">
+                <label for="txtTelefono">Telefono</label>
+                <input id="txtTelefono" class="form-control" type="number" name="txtTelefono" title="Puede modificar el telefono" value="{{proveedor[4]}}">
+            </div>
+            <div class="form-group">
+                <label for="txtEmail">Email</label>
+                <input id="txtEmail" class="form-control" type="email" name="txtEmail"  title="Puede modificar el email" value="{{proveedor[5]}}">
+            </div>
+            <div class="form-group">
+                <label for="txtContacto">Contacto</label>
+                <input id="txtContacto" class="form-control" type="text" name="txtContacto" title="Puede modificar el nombre de contacto" value="{{proveedor[6]}}" oninput="convertirAMayusculasEdicion('txtContacto')">
+            </div>
+            <div class="form-group">
+                <label for="txtTelefonoContacto">Telefono Contacto</label>
+                <input id="txtTelefonoContacto" class="form-control" type="number" name="txtTelefonoContacto" title="Puede modificar el telefono de contacto" value="{{proveedor[7]}}">
+            </div>
+            <div class="form-group">
+                <label for="txtEstado">Estado</label> 
+                <select class="form-control" type="select" name="txtEstado" value="{{proveedor[8]}}">
+                     <option value="ACTIVO">ACTIVO</option>
+                     <option value="INACTIVO">INACTIVO</option>
+            </div>
+    
+            <div class="form-group">
+                <input type="submit" class="btn btn-success" value="Modificar">
+                <a href="{{url_for('proveedor')}}" class="btn btn-primary">Regresar</a>
+            </div>
+    
+            </p>
+        </div>
+    </div>
+
+    {% endfor %}
+
+</form>
+
+{% include 'footer.html' %}
