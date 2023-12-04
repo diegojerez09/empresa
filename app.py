@@ -932,7 +932,7 @@ def storagedeposito_material():
 def movimientos():
     sql1 = "SELECT proveedor.NombreProveedor, proveedor.ProveedorId FROM proveedor INNER JOIN movimientos ON movimientos.Origen = proveedor.ProveedorId GROUP by proveedor.NombreProveedor;"
     sql = "SELECT * FROM `movimientos`;"
-    sql2 = "SELECT Nombre, DepositoId FROM deposito INNER JOIN movimientos ON movimientos.Origen = deposito.DepositoId GROUP BY Nombre;  "
+    sql2 = "SELECT Nombre, DepositoId FROM deposito INNER JOIN movimientos ON movimientos.Origen = deposito.DepositoId OR movimientos.Destino = deposito.DepositoId GROUP BY Nombre;   "
     
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -1263,7 +1263,7 @@ def storage_movimientos():
             cantidad_movimientos_detalle = row_data['cantidad']
             tipo = row_data['tipo']
             id = row_data['id']
-
+            print(cantidad_movimientos_detalle)
             conn = mysql.connect()
             cursor = conn.cursor()
             #BUSCO EL IDMOVIMIENTO,IDMATERIAL,IDHERRAMIENTA Y LAS CANTIDADES
@@ -1278,14 +1278,14 @@ def storage_movimientos():
             #proveedorid = datos_movimientos[3]
             if tipo == 1:
                 sql1 = "INSERT INTO movimientos_detalle(MovimientosId , HerramientaId , CantidadHerramienta) VALUES (%s,%s,%s);"
-                datos1 =(ultimoid,id,cantidad)
+                datos1 =(ultimoid,id,cantidad_movimientos_detalle)
                 conn = mysql.connect()
                 cursor = conn.cursor()
                 cursor.execute(sql1,datos1)
                 conn.commit()
             elif tipo == 2:
                 sql1 = "INSERT INTO movimientos_detalle(MovimientosId, MaterialId, CantidadMaterial) VALUES (%s,%s,%s);"
-                datos1 =(ultimoid,id,cantidad)
+                datos1 =(ultimoid,id,cantidad_movimientos_detalle)
                 conn = mysql.connect()
                 cursor = conn.cursor()
                 cursor.execute(sql1,datos1)
@@ -1310,23 +1310,52 @@ def MostarMovimiento(id):
     print(id)
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute("Select NumeroRemito,ProveedorId,HerramientaId,CantidadHerramienta,MaterialId,CantidadMaterial from movimientos INNER JOIN movimientos_detalle ON movimientos.MovimientoId = movimientos_detalle.MovimientosId WHERE MovimientoId = %s",(id))
-    movimientosdetalles = cursor.fetchall()
+    #cursor.execute("Select NumeroRemito,ProveedorId,HerramientaId,CantidadHerramienta,MaterialId,CantidadMaterial from movimientos INNER JOIN movimientos_detalle ON movimientos.MovimientoId = movimientos_detalle.MovimientosId WHERE MovimientoId = %s",(id))
+    #movimientosdetalles = cursor.fetchall()
+    cursor.execute("SELECT herramienta.Nombre, movimientos_detalle.CantidadHerramienta from herramienta INNER JOIN movimientos_detalle ON movimientos_detalle.HerramientaId = herramienta.HerramientaId INNER JOIN movimientos ON movimientos.MovimientoId = movimientos_detalle.MovimientosId WHERE movimientos.MovimientoId = %s",(id) )
+    herramientacantidad = cursor.fetchall()
     
-    print(movimientosdetalles)
+    cursor.execute("SELECT material.Nombre, movimientos_detalle.CantidadMaterial from material INNER JOIN movimientos_detalle ON movimientos_detalle.MaterialId = material.MaterialId INNER JOIN movimientos ON movimientos.MovimientoId = movimientos_detalle.MovimientosId WHERE movimientos.MovimientoId =%s",(id))
+    materialcantidad = cursor.fetchall()
+    #datos1 =(id)
+    #cursor.execute(sql1,datos1)
+    #print(materialcantidad)
+    #print(movimientosdetalles)
+    #print(herramientacantidad)
     #conn.commit()
     #flash('MOVIMIENTO ELIMINADO')
+
     
-    # Determinar si se deben mostrar los encabezados
-    #show_headers = any(any(dato is not None for dato in detalle) for detalle in movimientosdetalles)
 
-    # Filtrar los detalles para excluir aquellos con todos los datos como None
-    #filtered_movimientosdetalles = [detalle for detalle in movimientosdetalles if any(dato is not None for dato in detalle)]
+    lista_materiales = [
+        {
+            'NombreMaterial': detalleM[0],
+            'CantidadMaterial': detalleM[1],
+        }   for detalleM in materialcantidad
+    ]   
 
-    # Devolver los detalles como JSON
-    #return render_template('movimientos/detalles.html', movimientosdetalles=filtered_movimientosdetalles, show_headers=show_headers)
-    # Devolver los detalles como JSON
-    return render_template('movimientos/detalles.html', movimientosdetalles = movimientosdetalles)
+
+
+    detalles_herramientas = [
+    {
+            'NombreHerramienta': detalle[0],
+            'CantidadHerramienta': detalle[1],
+            
+        } for detalle in herramientacantidad
+    ]
+
+    
+    # Crear un diccionario que contenga ambos conjuntos de datos
+    data = {
+        'detalles_herramientas': detalles_herramientas,
+        'lista_materiales': lista_materiales
+    }
+
+    print(lista_materiales,detalles_herramientas)
+    return jsonify(data)
+    
+    
+    #return render_template('movimientos/detalles.html', movimientosdetalles = movimientosdetalles , herramientacantidad = herramientacantidad)
 
 
 

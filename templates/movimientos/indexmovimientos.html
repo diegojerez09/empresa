@@ -83,7 +83,8 @@
                                 <a onclick="return confirm('¿Desea dar de Baja al Movimiento?')" class="btn btn-danger"
                                     href="/eliminarmovimiento/{{ movimiento[0] }}">Eliminar</a>
                                 <!-- Botón para abrir el modal -->
-                                <a class="btn btn-primary mostrarModal" href="/MostarMovimiento/{{ movimiento[0] }}">Mostrar</a>
+                                <!-- <a class="btn btn-primary" href="/MostarMovimiento/{{ movimiento[0] }}">Mostrar</a> -->
+                                <a class="btn btn-info ver-herramienta" data-toggle="modal" data-target="#verHerramientaModal" data-herramienta-id="{{ movimiento[0] }}" href="#">Ver</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -91,16 +92,94 @@
             </table>
             
 
+            <!-------------------------------------------MODAL------------------------------------------------>
+            <div class="modal fade" id="verHerramientaModal" tabindex="-1" role="dialog" aria-labelledby="verHerramientaModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style="background-color: #eaffc2;">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="verHerramientaModalLabel">Detalles del movimiento</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" >
+                            <!-- Contenido del modal -->
 
+                           
+                            <b> <p id="nombreHerramienta">  </p> </b>
+                            
+                            <b> <div id="CantidadHerramientas"></div> </b>
 
-
-      
-
-
-
+                            <b> <p id="nombreMaterial">  </p> </b>
+                            <b> <p id="cantidadMaterial">  </p> </b>
+                            
+                        </div>
+                           
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
     </div>
 
+
+    <script>
+        // Manejador de clic para los enlaces "Ver"
+        document.querySelectorAll('.ver-herramienta').forEach(function(element) {
+            element.addEventListener('click', function() {
+                // Obtener el ID de la herramienta desde el atributo data-herramienta-id
+                var herramientaId = element.getAttribute('data-herramienta-id');
+                
+                // Realizar una solicitud AJAX para obtener los detalles de la herramienta
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        // Parsear la respuesta JSON
+                        var detalles = JSON.parse(xhr.responseText);
+                        
+                        // Limpiar el contenido anterior del modal
+                        document.getElementById('nombreHerramienta').innerText = "";
+                        document.getElementById('CantidadHerramientas').innerHTML = "";
+
+                        document.getElementById('nombreMaterial').innerText="";
+                        document.getElementById('cantidadMaterial').innerText="";
+
+                        // Actualizar el contenido del modal con los detalles del material
+                        
+
+
+                        // Actualizar el contenido del modal con los detalles del material
+                        if (detalles.lista_materiales.length > 0) {
+                         document.getElementById('nombreMaterial').innerText = detalles.lista_materiales[0].NombreMaterial;
+                         var cantidadMaterial = detalles.lista_materiales[0].CantidadMaterial;    
+                         
+                         // Actualizar el contenido del modal con la cantidad del material
+                        document.getElementById('cantidadMaterial').innerText = "Cantidad: " + cantidadMaterial;
+                         
+                        }
+                        
+
+                        // Actualizar el contenido del modal con los detalles de la herramienta
+                        document.getElementById('nombreHerramienta').innerText = detalles.detalles_herramientas[0].NombreHerramienta;
+    
+                        // Iterar sobre los detalles de las herramientas y agregarlos al modal
+                        detalles.detalles_herramientas.forEach(function(detalle) {
+                            var herramientaInfo = document.createElement('p');
+                            herramientaInfo.innerText = " Cantidad: " + detalle.CantidadHerramienta;
+                            document.getElementById('CantidadHerramientas').appendChild(herramientaInfo);
+                        });
+    
+                        // Mostrar el modal
+                        $('#verHerramientaModal').modal('show');
+                    }
+                };
+                xhr.open('GET', '/MostarMovimiento/' + herramientaId, true);
+                xhr.send();
+            });
+        });
+    </script>
 
 
     {% include 'footer.html' %}
