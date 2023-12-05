@@ -86,7 +86,7 @@ def login():
             user = User()
             user.id = account[0]
             login_user(user)  # Registra al usuario como autenticado
-            return render_template('header.html')
+            return render_template('index.html')
         else:
             return render_template('login/index.html', mensaje="Usuario o Contraseña incorrecto")
             
@@ -1162,8 +1162,10 @@ def storage_movimientos():
         conn = mysql.connect()
         cursor = conn.cursor()
             #BUSCO EL IDMOVIMIENTO,IDMATERIAL,IDHERRAMIENTA Y LAS CANTIDADES
-        cursor.execute("SELECT MAX(NumeroRemito) AS ultimo_remito FROM movimientos WHERE Tipo = 2" )
+        #cursor.execute("SELECT MAX(NumeroRemito) AS ultimo_remito FROM movimientos WHERE Tipo = 2" )
+        cursor.execute("SELECT COALESCE(MAX(NumeroRemito), 0) AS ultimo_remito FROM movimientos WHERE Tipo = 2;")
         datosremito = cursor.fetchone()
+        print(datosremito[0])
         ultimo_remito = int(datosremito[0]) + 1
         print(ultimo_remito)
         sql = "INSERT INTO movimientos( Tipo,Origen, Destino,Fecha,NumeroRemito) VALUES ( %s, %s,%s,%s,%s);"
@@ -1269,7 +1271,7 @@ def storage_movimientos():
             #BUSCO EL IDMOVIMIENTO,IDMATERIAL,IDHERRAMIENTA Y LAS CANTIDADES
             cursor.execute("SELECT MAX(MovimientoId) AS ultimo_id FROM movimientos" )
             datosid = cursor.fetchone()
-            ultimoid = datosid[0]
+            ultimoid =  datosid[0]
             #cursor.execute("SELECT MovimientoId, Fecha , NumeroRemito ,ProveedorId FROM movimientos")
             #datos_movimientos = cursor.fetchone()
             #movimientoid = datos_movimientos[0]

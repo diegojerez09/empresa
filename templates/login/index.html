@@ -20,37 +20,52 @@
 <body>
   
 </body>
-</html>
-<br/>
 
-    <style>
-        .caja{
-            margin: 10%;
-            margin-left: 30%;
-            margin-right: 30%;
-        }
-    </style>
-    
-    
-    <div class="caja">
-      <form method="POST" action="/acceso-login" enctype="multipart/form-data">
-        <h1>Login</h1>
-    
-        <div class="form-group">
-          <label for="exampleInputEmail1">Email</label>
-          <input type="email" class="form-control" id="txtC
+</html>
+<br />
+
+
+<style>
+ 
+
+
+  .caja {
+    margin: 10%;
+    margin-left: 30%;
+    margin-right: 30%;
+    padding: 20px;
+    /* Agregado para dar espacio interno al contenedor */
+    background-color: #ecf0f3;
+    /* Color de fondo del contenedor */
+    border: 1px solid #1279e0;
+    /* Borde del contenedor */
+    border-radius: 10px;
+    /* Bordes redondeados */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Sombra */
+  }
+</style>
+
+
+<div class="caja">
+  <form method="POST" action="/acceso-login" enctype="multipart/form-data">
+    <h1>Iniciar Sesión</h1>
+
+    <div class="form-group">
+      <label for="exampleInputEmail1">Email</label>
+      <input type="email" class="form-control" id="txtC
     orreo" aria-describedby="emailHelp" placeholder="Email" name="txtCorreo">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input type="password" class="form-control" id="txtPassword" placeholder="Password" name="txtPassword">
-        </div>
-    
-        <button type="submit" class="btn btn-primary">Ingresar</button>
-      </form>
-      
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Password</label>
+      <input type="password" class="form-control" id="txtPassword" placeholder="Password" name="txtPassword">
     </div>
 
-  
+    <button type="submit" class="btn btn-primary">Ingresar</button>
+  </form>
 
-    {% include 'footer.html' %}
+</div>
+
+
+
+{% include 'footer.html' %}

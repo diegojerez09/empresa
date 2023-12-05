@@ -150,25 +150,36 @@
                         
 
 
-                        // Actualizar el contenido del modal con los detalles del material
-                        if (detalles.lista_materiales.length > 0) {
-                         document.getElementById('nombreMaterial').innerText = detalles.lista_materiales[0].NombreMaterial;
-                         var cantidadMaterial = detalles.lista_materiales[0].CantidadMaterial;    
-                         
-                         // Actualizar el contenido del modal con la cantidad del material
-                        document.getElementById('cantidadMaterial').innerText = "Cantidad: " + cantidadMaterial;
-                         
-                        }
-                        
+                        // Mostrar el nombre y cantidad de cada material si existe
+                        detalles.lista_materiales.forEach(function(material) {
+                            var materialContainer = document.createElement('div');
 
-                        // Actualizar el contenido del modal con los detalles de la herramienta
-                        document.getElementById('nombreHerramienta').innerText = detalles.detalles_herramientas[0].NombreHerramienta;
-    
-                        // Iterar sobre los detalles de las herramientas y agregarlos al modal
+                            var materialNombre = document.createElement('p');
+                            materialNombre.innerText = material.NombreMaterial;
+
+                             var materialCantidad = document.createElement('p');
+                             materialCantidad.innerText = "Cantidad: " + material.CantidadMaterial;
+
+                            materialContainer.appendChild(materialNombre);
+                            materialContainer.appendChild(materialCantidad);
+
+                            document.getElementById('nombreMaterial').appendChild(materialContainer);
+                        });
+
+                        // Mostrar el nombre y cantidad de cada herramienta
                         detalles.detalles_herramientas.forEach(function(detalle) {
-                            var herramientaInfo = document.createElement('p');
-                            herramientaInfo.innerText = " Cantidad: " + detalle.CantidadHerramienta;
-                            document.getElementById('CantidadHerramientas').appendChild(herramientaInfo);
+                            var herramientaContainer = document.createElement('div');
+
+                            var herramientaNombre = document.createElement('p');
+                            herramientaNombre.innerText = detalle.NombreHerramienta;
+
+                            var herramientaCantidad = document.createElement('p');
+                            herramientaCantidad.innerText = "Cantidad: " + detalle.CantidadHerramienta;
+
+                            herramientaContainer.appendChild(herramientaNombre);
+                            herramientaContainer.appendChild(herramientaCantidad);
+
+                            document.getElementById('CantidadHerramientas').appendChild(herramientaContainer);
                         });
     
                         // Mostrar el modal
